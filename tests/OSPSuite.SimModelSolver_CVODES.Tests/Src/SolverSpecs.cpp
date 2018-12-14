@@ -1,6 +1,6 @@
 #include "SimModelSolverBase/SimModelSolverBase.h"
 #include "SimModelSolverBase/SimModelSolverErrorData.h"
-#include "SimModelSolver_CVODES_2_8_2Specs/ExceptionHelper.h"
+#include "SimModelSolver_CVODESSpecs/ExceptionHelper.h"
 
 #include <vector>
 #include <windows.h>
@@ -259,7 +259,7 @@ namespace UnitTests
 	};
 
 
-	public ref class concern_for_simmodel_solver_cvodes282 abstract : ContextSpecification<double>
+	public ref class concern_for_simmodel_solver_cvodes abstract : ContextSpecification<double>
 	{
 	protected:
 
@@ -277,7 +277,7 @@ namespace UnitTests
 
 			TestSolverCallerBase * SC = CreateSolverCaller();
 
-			std::string LibName = "OSPSuite.SimModelSolver_CVODES282.dll";
+			std::string LibName = "OSPSuite.SimModelSolver_CVODES.dll";
 			hLib = LoadLibrary(LibName.c_str());
 			if (!hLib)
 				throw "Cannot load library " + LibName;
@@ -286,9 +286,9 @@ namespace UnitTests
 			if (!pGetSolverInterface)
 				throw LibName + " is not valid SimModel Solver";
 
-			SimModelSolverBase * pCVODES282 = (pGetSolverInterface)(SC, NumberOfUnknowns(), NumberOfSensitivityParameters());
+			SimModelSolverBase * pCVODES = (pGetSolverInterface)(SC, NumberOfUnknowns(), NumberOfSensitivityParameters());
 
-			return pCVODES282;
+			return pCVODES;
 		}
 
 		void ReleaseSolver()
@@ -305,11 +305,11 @@ namespace UnitTests
 		virtual int NumberOfSensitivityParameters() = 0;
 	};
 
-	public ref class concern_for_simmodel_solver_cvodes282_with_sensitivity abstract : concern_for_simmodel_solver_cvodes282
+	public ref class concern_for_simmodel_solver_cvodes_with_sensitivity abstract : concern_for_simmodel_solver_cvodes
 	{
 	protected:
 
-		//--- TODO move into basis class (concern_for_simmodel_solver_cvodes282)
+		//--- TODO move into basis class (concern_for_simmodel_solver_cvodes)
 		unsigned int _numberOfTimesteps = 12;
 		int _CVODE_Result;
 		array<double>^ _time;
@@ -322,9 +322,9 @@ namespace UnitTests
 
 		virtual void Context() override
 		{
-			concern_for_simmodel_solver_cvodes282::Context();
+			concern_for_simmodel_solver_cvodes::Context();
 
-			//--- TODO move into basis class (concern_for_simmodel_solver_cvodes282)
+			//--- TODO move into basis class (concern_for_simmodel_solver_cvodes)
 			_numberOfTimesteps = NumberOfTimesteps();
 			_timesteps = Timesteps();
 			_time = gcnew array<double>(NumberOfTimesteps());
@@ -339,25 +339,25 @@ namespace UnitTests
 
 			try
 			{
-				SimModelSolverBase * pCVODES282 = CreateSolver();
+				SimModelSolverBase * pCVODES = CreateSolver();
 
-				pCVODES282->SetAbsTol(AbsolutTolerances());
-				pCVODES282->SetRelTol(RelativeTolerance());
+				pCVODES->SetAbsTol(AbsolutTolerances());
+				pCVODES->SetRelTol(RelativeTolerance());
 
-				pCVODES282->SetH0(0.0);
-				pCVODES282->SetInitialTime(0.0);
-				pCVODES282->SetInitialValues(InitialValues());
+				pCVODES->SetH0(0.0);
+				pCVODES->SetInitialTime(0.0);
+				pCVODES->SetInitialValues(InitialValues());
 
 				if (NumberOfSensitivityParameters() > 0)
 				{
 					_sensitivities = gcnew array<double, 3>(_numberOfTimesteps, NumberOfUnknowns(), NumberOfSensitivityParameters());
 					_expectedSensitivities = FillExpectedSensitivities();
 
-					pCVODES282->SetNumberOfSensitivityParameters(NumberOfSensitivityParameters());
-					pCVODES282->SetSensitivityParametersInitialValues(InitialSensitivityParameterValues());
+					pCVODES->SetNumberOfSensitivityParameters(NumberOfSensitivityParameters());
+					pCVODES->SetSensitivityParametersInitialValues(InitialSensitivityParameterValues());
 				}
 
-				pCVODES282->Init();
+				pCVODES->Init();
 
 				Solution = new double[NumberOfUnknowns()];
 
@@ -372,7 +372,7 @@ namespace UnitTests
 				{
 					double tout = _timesteps[i - 1];
 					double tret;
-					_CVODE_Result = pCVODES282->PerformSolverStep(tout, Solution, SensitivityValues, tret);
+					_CVODE_Result = pCVODES->PerformSolverStep(tout, Solution, SensitivityValues, tret);
 
 					if (_CVODE_Result != 0)
 						return;
@@ -391,7 +391,7 @@ namespace UnitTests
 					}
 				}
 
-				pCVODES282->Terminate();
+				pCVODES->Terminate();
 			}
 			catch (std::string & str)
 			{
@@ -423,7 +423,7 @@ namespace UnitTests
 			ReleaseSolver();
 		}
 
-		//--- TODO move into basis class (concern_for_simmodel_solver_cvodes282)
+		//--- TODO move into basis class (concern_for_simmodel_solver_cvodes)
 		virtual int NumberOfTimesteps() = 0;
 		virtual array<double>^ Timesteps() = 0;
 		virtual std::vector < double > AbsolutTolerances() = 0;
@@ -435,7 +435,7 @@ namespace UnitTests
 		virtual std::vector<double> InitialSensitivityParameterValues() = 0;
 	};
 
-	public ref class when_solving_simpleSystem_with_sensitivity_Jacobian_not_set_Sensitivity_RHS_function_not_set : public concern_for_simmodel_solver_cvodes282_with_sensitivity
+	public ref class when_solving_simpleSystem_with_sensitivity_Jacobian_not_set_Sensitivity_RHS_function_not_set : public concern_for_simmodel_solver_cvodes_with_sensitivity
 	{
 	protected:
 
@@ -446,7 +446,7 @@ namespace UnitTests
 
 		virtual void Because() override
 		{
-			concern_for_simmodel_solver_cvodes282_with_sensitivity::Because();
+			concern_for_simmodel_solver_cvodes_with_sensitivity::Because();
 		}
 
 		virtual int NumberOfUnknowns() override
@@ -575,7 +575,7 @@ namespace UnitTests
 
 	};
 
-	public ref class when_solving_cvsRoberts_FSA_dns_with_sensitivity_Sensitivity_RHS_function_not_set : public concern_for_simmodel_solver_cvodes282_with_sensitivity
+	public ref class when_solving_cvsRoberts_FSA_dns_with_sensitivity_Sensitivity_RHS_function_not_set : public concern_for_simmodel_solver_cvodes_with_sensitivity
 	{
 	protected:
 
@@ -586,7 +586,7 @@ namespace UnitTests
 
 		virtual void Because() override
 		{
-			concern_for_simmodel_solver_cvodes282_with_sensitivity::Because();
+			concern_for_simmodel_solver_cvodes_with_sensitivity::Because();
 		}
 
 		virtual int NumberOfUnknowns() override
@@ -711,7 +711,7 @@ namespace UnitTests
 
 	};
 
-	public ref class concern_for_simmodel_solver_cvodes282_without_sensitivity abstract : concern_for_simmodel_solver_cvodes282
+	public ref class concern_for_simmodel_solver_cvodes_without_sensitivity abstract : concern_for_simmodel_solver_cvodes
 	{
 	protected:
 		int _CVODE_Result;
@@ -730,18 +730,18 @@ namespace UnitTests
 
 			try
 			{
-				SimModelSolverBase * pCVODES282 = CreateSolver();
+				SimModelSolverBase * pCVODES = CreateSolver();
 
-				pCVODES282->SetAbsTol(1e-12);
-				pCVODES282->SetInitialTime(0.0);
+				pCVODES->SetAbsTol(1e-12);
+				pCVODES->SetInitialTime(0.0);
 
 				std::vector<double> y0;
 				y0.push_back(2.0);
 				y0.push_back(0.0);
 
-				pCVODES282->SetInitialValues(y0);
+				pCVODES->SetInitialValues(y0);
 
-				pCVODES282->Init();
+				pCVODES->Init();
 
 				double Solution[2];
 
@@ -749,7 +749,7 @@ namespace UnitTests
 				{
 					double tout = _dt*i;
 					double tret;
-					_CVODE_Result = pCVODES282->PerformSolverStep(tout, Solution, NULL, tret);
+					_CVODE_Result = pCVODES->PerformSolverStep(tout, Solution, NULL, tret);
 
 					if (_CVODE_Result != 0)
 						return;
@@ -759,7 +759,7 @@ namespace UnitTests
 					_y1[i - 1] = Solution[1];
 				}
 
-				pCVODES282->Terminate();
+				pCVODES->Terminate();
 			}
 			catch (std::string & str)
 			{
@@ -788,7 +788,7 @@ namespace UnitTests
 		}
 	};
 
-	public ref class when_solving_example_system : public concern_for_simmodel_solver_cvodes282_without_sensitivity
+	public ref class when_solving_example_system : public concern_for_simmodel_solver_cvodes_without_sensitivity
 	{
 	protected:
 
@@ -803,7 +803,7 @@ namespace UnitTests
 		// y1 = exp(t)-exp(-t)
 		virtual void Because() override
 		{
-			concern_for_simmodel_solver_cvodes282_without_sensitivity::Because();
+			concern_for_simmodel_solver_cvodes_without_sensitivity::Because();
 		}
 
 	public:
@@ -832,7 +832,7 @@ namespace UnitTests
 
 	};
 
-	public ref class when_solving_system_with_nonrecoverable_error : public concern_for_simmodel_solver_cvodes282_without_sensitivity
+	public ref class when_solving_system_with_nonrecoverable_error : public concern_for_simmodel_solver_cvodes_without_sensitivity
 	{
 	protected:
 
@@ -843,7 +843,7 @@ namespace UnitTests
 
 		virtual void Because() override
 		{
-			concern_for_simmodel_solver_cvodes282_without_sensitivity::Because();
+			concern_for_simmodel_solver_cvodes_without_sensitivity::Because();
 		}
 
 	public:
@@ -856,7 +856,7 @@ namespace UnitTests
 
 	};
 
-	public ref class when_solving_example_system_band : public concern_for_simmodel_solver_cvodes282_without_sensitivity
+	public ref class when_solving_example_system_band : public concern_for_simmodel_solver_cvodes_without_sensitivity
 	{
 	protected:
 
@@ -871,7 +871,7 @@ namespace UnitTests
 		// y1 = exp(t)-exp(-t)
 		virtual void Because() override
 		{
-			concern_for_simmodel_solver_cvodes282_without_sensitivity::Because();
+			concern_for_simmodel_solver_cvodes_without_sensitivity::Because();
 		}
 
 	public:

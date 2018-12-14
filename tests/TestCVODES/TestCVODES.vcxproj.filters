@@ -33,88 +33,88 @@
     <ClCompile Include="Src\HelpFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodea.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodea.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodea_io.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodea_io.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_band.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_band.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_bandpre.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_bandpre.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_bbdpre.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_bbdpre.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_dense.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_dense.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_diag.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_diag.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_direct.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_direct.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_io.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_io.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_sparse.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_sparse.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_spbcgs.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_spbcgs.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_spgmr.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_spgmr.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_spils.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_spils.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_sptfqmr.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\cvodes\cvodes_sptfqmr.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\nvec_ser\nvector_serial.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\nvec_ser\nvector_serial.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_band.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_band.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_dense.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_dense.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_direct.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_direct.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_iterative.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_iterative.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_math.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_math.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_nvector.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_nvector.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_pcg.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_pcg.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_sparse.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_sparse.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_spbcgs.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_spbcgs.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_spfgmr.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_spfgmr.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_spgmr.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_spgmr.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Dev\CVODES_2.8.2\src\sundials\sundials_sptfqmr.c">
+    <ClCompile Include="..\..\Dev\CVODES\src\sundials\sundials_sptfqmr.c">
       <Filter>CVODES\Src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,127 +122,127 @@
     <ClInclude Include="Include\HelpFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_band.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_band.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_bandpre.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_bandpre.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_bbdpre.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_bbdpre.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_dense.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_dense.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_diag.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_diag.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_direct.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_direct.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_klu.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_klu.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_lapack.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_lapack.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_sparse.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_sparse.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_spbcgs.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_spbcgs.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_spgmr.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_spgmr.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_spils.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_spils.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_sptfqmr.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_sptfqmr.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\cvodes\cvodes_superlumt.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\cvodes\cvodes_superlumt.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\nvector\nvector_serial.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\nvector\nvector_serial.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_band.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_band.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_config.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_config.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_dense.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_dense.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_direct.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_direct.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_fnvector.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_fnvector.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_iterative.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_iterative.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_klu_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_klu_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_lapack.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_lapack.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_math.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_math.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_nvector.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_nvector.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_pcg.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_pcg.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_sparse.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_sparse.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_spbcgs.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_spbcgs.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_spfgmr.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_spfgmr.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_spgmr.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_spgmr.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_sptfqmr.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_sptfqmr.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_superlumt_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_superlumt_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\include\sundials\sundials_types.h">
+    <ClInclude Include="..\..\Dev\CVODES\include\sundials\sundials_types.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_bandpre_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_bandpre_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_bbdpre_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_bbdpre_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_diag_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_diag_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_direct_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_direct_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_sparse_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_sparse_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Dev\CVODES_2.8.2\src\cvodes\cvodes_spils_impl.h">
+    <ClInclude Include="..\..\Dev\CVODES\src\cvodes\cvodes_spils_impl.h">
       <Filter>CVODES\Include</Filter>
     </ClInclude>
   </ItemGroup>

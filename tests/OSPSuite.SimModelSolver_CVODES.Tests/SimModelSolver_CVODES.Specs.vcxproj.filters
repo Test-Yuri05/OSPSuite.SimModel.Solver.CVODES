@@ -23,7 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\SimModelSolver_CVODES_2_8_2Specs\ExceptionHelper.h">
+    <ClInclude Include="Include\SimModelSolver_CVODESSpecs\ExceptionHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

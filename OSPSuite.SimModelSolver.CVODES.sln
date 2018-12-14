@@ -13,9 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CVODES", "src\CVODES\CVODES.vcxproj", "{9DEA5AFB-DACD-4FF0-A677-FC9E8B17684C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OSPSuite.SimModelSolver_CVODES282", "src\OSPSuite.SimModelSolver_CVODES282\SimModelSolver_CVODES.vcxproj", "{6BDCA452-A027-4F64-908F-E1E9154F38EE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OSPSuite.SimModelSolver_CVODES", "src\OSPSuite.SimModelSolver_CVODES\SimModelSolver_CVODES.vcxproj", "{6BDCA452-A027-4F64-908F-E1E9154F38EE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OSPSuite.SimModelSolver_CVODES282.Tests", "tests\OSPSuite.SimModelSolver_CVODES2.8.2.Tests\SimModelSolver_CVODES2.8.2.Specs.vcxproj", "{218A251A-3BAE-4C44-8AA4-FA8A3FC4F264}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OSPSuite.SimModelSolver_CVODES.Tests", "tests\OSPSuite.SimModelSolver_CVODES.Tests\SimModelSolver_CVODES.Specs.vcxproj", "{218A251A-3BAE-4C44-8AA4-FA8A3FC4F264}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

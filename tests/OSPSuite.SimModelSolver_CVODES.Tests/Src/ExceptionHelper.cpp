@@ -1,4 +1,4 @@
-#include "SimModelSolver_CVODES_2_8_2Specs/ExceptionHelper.h"
+#include "SimModelSolver_CVODESSpecs/ExceptionHelper.h"
 
 using namespace std;
 
