@@ -13,12 +13,78 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Source Files\cvodes">
+      <UniqueIdentifier>{199f1aed-bfda-4fff-89a4-b47bf94c9d79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvec_openmp">
+      <UniqueIdentifier>{ef286ace-f403-49ad-86f6-b9155adec4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvec_par">
+      <UniqueIdentifier>{2aa82f5e-5504-492a-a069-f9108a8c1dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvec_parhyp">
+      <UniqueIdentifier>{c1459a6d-44b8-47d4-9f60-3c9e57b0d407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvec_petsc">
+      <UniqueIdentifier>{5fe18883-5400-4afb-9316-e65c685bb701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvec_pthreads">
+      <UniqueIdentifier>{d63cbceb-72e0-4ca0-834b-80ee676360a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvec_ser">
+      <UniqueIdentifier>{3b2a18a5-38b8-4700-a758-f0349d68c211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sundials">
+      <UniqueIdentifier>{17af8ea1-2f25-45df-b6ab-6e926f6114e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_band">
+      <UniqueIdentifier>{11182945-66a5-4d84-85b9-79cad990bf89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_dense">
+      <UniqueIdentifier>{6854f0aa-e489-4f1c-a08a-3daad69f0ab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_klu">
+      <UniqueIdentifier>{caba3502-9c73-49ab-b4d6-409935c135f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_lapackband">
+      <UniqueIdentifier>{a8f97b18-0a67-4e05-90f7-b15bc493c95a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_lapackdense">
+      <UniqueIdentifier>{adef78c0-a8b2-43cd-9a74-8275babb02c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_pcg">
+      <UniqueIdentifier>{4db491e8-c2a6-43cf-8a8f-6a8c12c173e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_spbcgs">
+      <UniqueIdentifier>{25853743-f7b9-4dc0-9f02-23652268e047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_spfgmr">
+      <UniqueIdentifier>{3bd51e17-e786-4846-a78d-340fe3060df7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_spgmr">
+      <UniqueIdentifier>{90fd9fe1-a264-4135-95e5-698a9b87620e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_sptfqmr">
+      <UniqueIdentifier>{28ec6bd7-5a99-49bf-be3b-1553bf58d6a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunlinsol_superlumt">
+      <UniqueIdentifier>{13692a5d-4103-4740-a312-74f888d85cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunmat_band">
+      <UniqueIdentifier>{34d08952-b380-420b-8289-f0250b502409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunmat_dense">
+      <UniqueIdentifier>{cb2c92b2-3921-40fb-9b48-5515e4e32ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunmat_sparse">
+      <UniqueIdentifier>{71deadb9-0cae-42e9-97d9-ca91f15e80e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sunnonlinsol">
+      <UniqueIdentifier>{adc5d4eb-076d-491a-a5b1-87f81c9183b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cvodes\cvodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_band.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\cvodes\cvodes_bandpre.h">
@@ -27,43 +93,31 @@
     <ClInclude Include="include\cvodes\cvodes_bbdpre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_dense.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\cvodes\cvodes_diag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\cvodes\cvodes_direct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_klu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_lapack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_sparse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_spbcgs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_spgmr.h">
+    <ClInclude Include="include\cvodes\cvodes_ls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\cvodes\cvodes_spils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_sptfqmr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\cvodes\cvodes_superlumt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\nvector\nvector_openmp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\nvector\nvector_openmpdev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\nvector\nvector_parallel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\nvector\nvector_parhyp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\nvector\nvector_petsc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\nvector\nvector_pthreads.h">
@@ -84,9 +138,6 @@
     <ClInclude Include="include\sundials\sundials_direct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\sundials\sundials_fnvector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\sundials\sundials_iterative.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -96,10 +147,28 @@
     <ClInclude Include="include\sundials\sundials_lapack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\sundials\sundials_linearsolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\sundials\sundials_math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\sundials\sundials_matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sundials\sundials_mpi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sundials\sundials_mpi_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sundials\sundials_nonlinearsolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\sundials\sundials_nvector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sundials\sundials_nvector_senswrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\sundials\sundials_pcg.h">
@@ -126,130 +195,232 @@
     <ClInclude Include="include\sundials\sundials_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\cvodes\cvodes_bandpre_impl.h">
+    <ClInclude Include="include\sundials\sundials_version.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_band.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_dense.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_klu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_lapackband.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_lapackdense.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_pcg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_spbcgs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_spfgmr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_spgmr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_sptfqmr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunlinsol\sunlinsol_superlumt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunmatrix\sunmatrix_band.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunmatrix\sunmatrix_dense.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunmatrix\sunmatrix_sparse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunnonlinsol\sunnonlinsol_fixedpoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sunnonlinsol\sunnonlinsol_newton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cvodes\cvodes_bandpre_impl.h">
+      <Filter>Source Files\cvodes</Filter>
     </ClInclude>
     <ClInclude Include="src\cvodes\cvodes_bbdpre_impl.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClInclude>
     <ClInclude Include="src\cvodes\cvodes_diag_impl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cvodes\cvodes_direct_impl.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClInclude>
     <ClInclude Include="src\cvodes\cvodes_impl.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClInclude>
-    <ClInclude Include="src\cvodes\cvodes_sparse_impl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\cvodes\cvodes_spils_impl.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\cvodes\cvodes_ls_impl.h">
+      <Filter>Source Files\cvodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\cvodes\cvodea.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\cvodes\cvodea_io.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\cvodes\cvodes.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_band.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\cvodes\cvodes_bandpre.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\cvodes\cvodes_bbdpre.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_dense.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\cvodes\cvodes_diag.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_direct.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\cvodes\cvodes_io.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_klu.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\cvodes\cvodes_ls.c">
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_lapack.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\cvodes\cvodes_nls.c">
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_sparse.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\cvodes\cvodes_nls_sim.c">
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_spbcgs.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\cvodes\cvodes_nls_stg.c">
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_spgmr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_spils.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_sptfqmr.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_superlumt.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\cvodes\cvodes_nls_stg1.c">
+      <Filter>Source Files\cvodes</Filter>
     </ClCompile>
     <ClCompile Include="src\nvec_openmp\nvector_openmp.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\nvec_openmp</Filter>
     </ClCompile>
-    <ClCompile Include="src\nvec_par\nvector_parallel.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_openmpdev\nvector_openmpdev.c">
+      <Filter>Source Files\nvec_openmp</Filter>
     </ClCompile>
-    <ClCompile Include="src\nvec_pthreads\nvector_pthreads.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_par\nvector_parallel.c">
+      <Filter>Source Files\nvec_par</Filter>
     </ClCompile>
-    <ClCompile Include="src\nvec_ser\nvector_serial.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_parhyp\nvector_parhyp.c">
+      <Filter>Source Files\nvec_parhyp</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_band.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_petsc\nvector_petsc.c">
+      <Filter>Source Files\nvec_petsc</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_dense.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_pthreads\nvector_pthreads.c">
+      <Filter>Source Files\nvec_pthreads</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_direct.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_ser\nvector_serial.c">
+      <Filter>Source Files\nvec_ser</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_iterative.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_version.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_math.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_band.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_nvector.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_dense.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_pcg.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_direct.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_sparse.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_iterative.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_spbcgs.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_linearsolver.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_spfgmr.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_math.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_spgmr.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_matrix.c">
+      <Filter>Source Files\sundials</Filter>
     </ClCompile>
-    <ClCompile Include="src\sundials\sundials_sptfqmr.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_mpi.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_nonlinearsolver.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_nvector.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_nvector_senswrapper.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_pcg.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_sparse.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_spbcgs.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_spfgmr.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_spgmr.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_sptfqmr.c">
+      <Filter>Source Files\sundials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_band\sunlinsol_band.c">
+      <Filter>Source Files\sunlinsol_band</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_dense\sunlinsol_dense.c">
+      <Filter>Source Files\sunlinsol_dense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_klu\sunlinsol_klu.c">
+      <Filter>Source Files\sunlinsol_klu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_lapackband\sunlinsol_lapackband.c">
+      <Filter>Source Files\sunlinsol_lapackband</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_lapackdense\sunlinsol_lapackdense.c">
+      <Filter>Source Files\sunlinsol_lapackdense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_pcg\sunlinsol_pcg.c">
+      <Filter>Source Files\sunlinsol_pcg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_spbcgs\sunlinsol_spbcgs.c">
+      <Filter>Source Files\sunlinsol_spbcgs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_spfgmr\sunlinsol_spfgmr.c">
+      <Filter>Source Files\sunlinsol_spfgmr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_spgmr\sunlinsol_spgmr.c">
+      <Filter>Source Files\sunlinsol_spgmr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_sptfqmr\sunlinsol_sptfqmr.c">
+      <Filter>Source Files\sunlinsol_sptfqmr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_superlumt\sunlinsol_superlumt.c">
+      <Filter>Source Files\sunlinsol_superlumt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunmat_band\sunmatrix_band.c">
+      <Filter>Source Files\sunmat_band</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunmat_dense\sunmatrix_dense.c">
+      <Filter>Source Files\sunmat_dense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunmat_sparse\sunmatrix_sparse.c">
+      <Filter>Source Files\sunmat_sparse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunnonlinsol\fixedpoint\sunnonlinsol_fixedpoint.c">
+      <Filter>Source Files\sunnonlinsol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunnonlinsol\newton\sunnonlinsol_newton.c">
+      <Filter>Source Files\sunnonlinsol</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

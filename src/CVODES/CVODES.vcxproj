@@ -20,34 +20,34 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cvodes\cvodes.h" />
-    <ClInclude Include="include\cvodes\cvodes_band.h" />
     <ClInclude Include="include\cvodes\cvodes_bandpre.h" />
     <ClInclude Include="include\cvodes\cvodes_bbdpre.h" />
-    <ClInclude Include="include\cvodes\cvodes_dense.h" />
     <ClInclude Include="include\cvodes\cvodes_diag.h" />
     <ClInclude Include="include\cvodes\cvodes_direct.h" />
-    <ClInclude Include="include\cvodes\cvodes_klu.h" />
-    <ClInclude Include="include\cvodes\cvodes_lapack.h" />
-    <ClInclude Include="include\cvodes\cvodes_sparse.h" />
-    <ClInclude Include="include\cvodes\cvodes_spbcgs.h" />
-    <ClInclude Include="include\cvodes\cvodes_spgmr.h" />
+    <ClInclude Include="include\cvodes\cvodes_ls.h" />
     <ClInclude Include="include\cvodes\cvodes_spils.h" />
-    <ClInclude Include="include\cvodes\cvodes_sptfqmr.h" />
-    <ClInclude Include="include\cvodes\cvodes_superlumt.h" />
     <ClInclude Include="include\nvector\nvector_openmp.h" />
+    <ClInclude Include="include\nvector\nvector_openmpdev.h" />
     <ClInclude Include="include\nvector\nvector_parallel.h" />
+    <ClInclude Include="include\nvector\nvector_parhyp.h" />
+    <ClInclude Include="include\nvector\nvector_petsc.h" />
     <ClInclude Include="include\nvector\nvector_pthreads.h" />
     <ClInclude Include="include\nvector\nvector_serial.h" />
     <ClInclude Include="include\sundials\sundials_band.h" />
     <ClInclude Include="include\sundials\sundials_config.h" />
     <ClInclude Include="include\sundials\sundials_dense.h" />
     <ClInclude Include="include\sundials\sundials_direct.h" />
-    <ClInclude Include="include\sundials\sundials_fnvector.h" />
     <ClInclude Include="include\sundials\sundials_iterative.h" />
     <ClInclude Include="include\sundials\sundials_klu_impl.h" />
     <ClInclude Include="include\sundials\sundials_lapack.h" />
+    <ClInclude Include="include\sundials\sundials_linearsolver.h" />
     <ClInclude Include="include\sundials\sundials_math.h" />
+    <ClInclude Include="include\sundials\sundials_matrix.h" />
+    <ClInclude Include="include\sundials\sundials_mpi.h" />
+    <ClInclude Include="include\sundials\sundials_mpi_types.h" />
+    <ClInclude Include="include\sundials\sundials_nonlinearsolver.h" />
     <ClInclude Include="include\sundials\sundials_nvector.h" />
+    <ClInclude Include="include\sundials\sundials_nvector_senswrapper.h" />
     <ClInclude Include="include\sundials\sundials_pcg.h" />
     <ClInclude Include="include\sundials\sundials_sparse.h" />
     <ClInclude Include="include\sundials\sundials_spbcgs.h" />
@@ -56,69 +56,110 @@
     <ClInclude Include="include\sundials\sundials_sptfqmr.h" />
     <ClInclude Include="include\sundials\sundials_superlumt_impl.h" />
     <ClInclude Include="include\sundials\sundials_types.h" />
+    <ClInclude Include="include\sundials\sundials_version.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_band.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_dense.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_klu.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_lapackband.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_lapackdense.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_pcg.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_spbcgs.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_spfgmr.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_spgmr.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_sptfqmr.h" />
+    <ClInclude Include="include\sunlinsol\sunlinsol_superlumt.h" />
+    <ClInclude Include="include\sunmatrix\sunmatrix_band.h" />
+    <ClInclude Include="include\sunmatrix\sunmatrix_dense.h" />
+    <ClInclude Include="include\sunmatrix\sunmatrix_sparse.h" />
+    <ClInclude Include="include\sunnonlinsol\sunnonlinsol_fixedpoint.h" />
+    <ClInclude Include="include\sunnonlinsol\sunnonlinsol_newton.h" />
     <ClInclude Include="src\cvodes\cvodes_bandpre_impl.h" />
     <ClInclude Include="src\cvodes\cvodes_bbdpre_impl.h" />
     <ClInclude Include="src\cvodes\cvodes_diag_impl.h" />
-    <ClInclude Include="src\cvodes\cvodes_direct_impl.h" />
     <ClInclude Include="src\cvodes\cvodes_impl.h" />
-    <ClInclude Include="src\cvodes\cvodes_sparse_impl.h" />
-    <ClInclude Include="src\cvodes\cvodes_spils_impl.h" />
+    <ClInclude Include="src\cvodes\cvodes_ls_impl.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_openmpdev\nvector_openmpdev.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_parhyp\nvector_parhyp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_par\nvector_parallel.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_petsc\nvector_petsc.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_pthreads\nvector_pthreads.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\nvec_ser\nvector_serial.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_band.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_dense.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_direct.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_iterative.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_linearsolver.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_math.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_matrix.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_mpi.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_nonlinearsolver.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_nvector.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_nvector_senswrapper.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_pcg.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_sparse.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_spbcgs.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_spfgmr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_spgmr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_sptfqmr.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sundials\sundials_version.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_band\sunlinsol_band.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_dense\sunlinsol_dense.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_klu\sunlinsol_klu.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_lapackband\sunlinsol_lapackband.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_lapackdense\sunlinsol_lapackdense.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_pcg\sunlinsol_pcg.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_spbcgs\sunlinsol_spbcgs.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_spfgmr\sunlinsol_spfgmr.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_spgmr\sunlinsol_spgmr.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_sptfqmr\sunlinsol_sptfqmr.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunlinsol_superlumt\sunlinsol_superlumt.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunmat_band\sunmatrix_band.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunmat_dense\sunmatrix_dense.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunmat_sparse\sunmatrix_sparse.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunnonlinsol\fixedpoint\sunnonlinsol_fixedpoint.c" />
+    <ClCompile Include="..\..\..\CVODES\cvodes-4.0.1\src\sunnonlinsol\newton\sunnonlinsol_newton.c" />
     <ClCompile Include="src\cvodes\cvodea.c" />
     <ClCompile Include="src\cvodes\cvodea_io.c" />
     <ClCompile Include="src\cvodes\cvodes.c" />
-    <ClCompile Include="src\cvodes\cvodes_band.c" />
     <ClCompile Include="src\cvodes\cvodes_bandpre.c" />
     <ClCompile Include="src\cvodes\cvodes_bbdpre.c" />
-    <ClCompile Include="src\cvodes\cvodes_dense.c" />
     <ClCompile Include="src\cvodes\cvodes_diag.c" />
-    <ClCompile Include="src\cvodes\cvodes_direct.c" />
     <ClCompile Include="src\cvodes\cvodes_io.c" />
-    <ClCompile Include="src\cvodes\cvodes_klu.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\cvodes\cvodes_lapack.c" />
-    <ClCompile Include="src\cvodes\cvodes_sparse.c" />
-    <ClCompile Include="src\cvodes\cvodes_spbcgs.c" />
-    <ClCompile Include="src\cvodes\cvodes_spgmr.c" />
-    <ClCompile Include="src\cvodes\cvodes_spils.c" />
-    <ClCompile Include="src\cvodes\cvodes_sptfqmr.c" />
-    <ClCompile Include="src\cvodes\cvodes_superlumt.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\cvodes\cvodes_ls.c" />
+    <ClCompile Include="src\cvodes\cvodes_nls.c" />
+    <ClCompile Include="src\cvodes\cvodes_nls_sim.c" />
+    <ClCompile Include="src\cvodes\cvodes_nls_stg.c" />
+    <ClCompile Include="src\cvodes\cvodes_nls_stg1.c" />
     <ClCompile Include="src\nvec_openmp\nvector_openmp.c" />
-    <ClCompile Include="src\nvec_par\nvector_parallel.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\nvec_pthreads\nvector_pthreads.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\nvec_ser\nvector_serial.c" />
-    <ClCompile Include="src\sundials\sundials_band.c" />
-    <ClCompile Include="src\sundials\sundials_dense.c" />
-    <ClCompile Include="src\sundials\sundials_direct.c" />
-    <ClCompile Include="src\sundials\sundials_iterative.c" />
-    <ClCompile Include="src\sundials\sundials_math.c" />
-    <ClCompile Include="src\sundials\sundials_nvector.c" />
-    <ClCompile Include="src\sundials\sundials_pcg.c" />
-    <ClCompile Include="src\sundials\sundials_sparse.c" />
-    <ClCompile Include="src\sundials\sundials_spbcgs.c" />
-    <ClCompile Include="src\sundials\sundials_spfgmr.c" />
-    <ClCompile Include="src\sundials\sundials_spgmr.c" />
-    <ClCompile Include="src\sundials\sundials_sptfqmr.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9DEA5AFB-DACD-4FF0-A677-FC9E8B17684C}</ProjectGuid>
