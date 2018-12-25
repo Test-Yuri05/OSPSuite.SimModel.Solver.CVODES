@@ -8,8 +8,8 @@
 #include "cvodes/cvodes.h"    /* prototypes for CVodeMalloc, CVode, and CVodeFree, */
                       /* constants OPT_SIZE, BDF, NEWTON, SV, SUCCESS,     */
                       /* NST, NFE, NSETUPS, NNI, NCFN, NETF                */
-#include "cvodes/cvodes_dense.h"  /* prototype for CVDense, constant DENSE_NJE         */
-#include "cvodes/cvodes_band.h"  /* prototype for CVBand         */
+#include "sunlinsol/sunlinsol_dense.h"  /* prototype for CVDense, constant DENSE_NJE         */
+#include "sunlinsol/sunlinsol_band.h"  /* prototype for CVBand         */
 #include "nvector/nvector_serial.h"
 
 #include "SimModelSolverBase/SimModelSolverBase.h"
@@ -66,17 +66,18 @@ private:
 	static int Rhs (realtype t, N_Vector y, N_Vector ydot, void * user_data);
 
 	//Call to jacobian function for the dense linear solver
-	static int CVODE_JacFn_Dense(long int N, 
-		                         realtype t,
-                                 N_Vector y, N_Vector fy, DlsMat J, void *user_data,
-                                 N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
+	static int CVODE_JacFn_Dense(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, 
+		                         void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
 
 	//Call to jacobian function for the band linear solver
-	static int CVODE_JacFn_Band(long int N, 
-		                        long int mupper, long int mlower,
-		                        realtype t, 
-								N_Vector y, N_Vector fy, DlsMat J, void *user_data,
-                                N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
+	static int CVODE_JacFn_Band(realtype t, N_Vector y, N_Vector fy, SUNMatrix J,
+		                        void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
+
+	//static int CVODE_JacFn_Band(long int N, 
+	//	                        long int mupper, long int mlower,
+	//	                        realtype t, 
+	//							N_Vector y, N_Vector fy, DlsMat J, void *user_data,
+ //                               N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
 
 	//Call to sensitivity RHS function
 	static int CVODE_SensitivityRhsFunction(int Ns, realtype t, N_Vector y, N_Vector ydot, int iS, 
@@ -86,6 +87,9 @@ private:
 	std::string ToString (double dValue);
 
 	void setupSensitivityProblem();
+
+	SUNMatrix _linearSolverMatrix;
+	SUNLinearSolver _linearSolver;
 
 public:
 	UserData * CVODES_UserData;

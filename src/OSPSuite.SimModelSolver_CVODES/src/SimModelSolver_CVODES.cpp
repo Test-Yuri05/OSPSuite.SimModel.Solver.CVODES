@@ -17,7 +17,7 @@ SimModelSolver_CVODES::SimModelSolver_CVODES(ISolverCaller * pSolverCaller, int 
 	_maxOrd =5;
 	_mxHNil = 10;
 	_lmm = CV_BDF;
-	_iter = CV_NEWTON;
+	//_iter = CV_NEWTON; //TODO 4.0
 
 	_absTol_NV = NULL;            
 	_initialData = NULL;  
@@ -29,6 +29,9 @@ SimModelSolver_CVODES::SimModelSolver_CVODES(ISolverCaller * pSolverCaller, int 
 
 	CVODES_UserData = new UserData();
 	CVODES_UserData->Solver = this;
+
+	_linearSolverMatrix = NULL;
+	_linearSolver = NULL;
 }
 
 SimModelSolver_CVODES::~SimModelSolver_CVODES ()
@@ -94,7 +97,7 @@ void SimModelSolver_CVODES::Init ()
 			                              "Cannot allocate memory for solution vector");
 		
 		//Instantiate CVODE solver and specify the solution method
-		_cvodeMem = CVodeCreate(_lmm, _iter);
+		_cvodeMem = CVodeCreate(_lmm);
 		if (_cvodeMem == NULL) 
 			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
 			                              "Could not reserve memory for CVODE!");
@@ -122,61 +125,77 @@ void SimModelSolver_CVODES::Init ()
 		//fill solver options 
 		this->FillSolverOptions();
 
-		//---- Call CVDense or CVBand to specify the CVODE dense linear solver
+		//---- create CVODES linear solver (band or dense)
 		if (_solverCaller->UseBandLinearSolver())
 		{
-			flag = CVBand(_cvodeMem, _problemSize, 
-				          _solverCaller->GetUpperHalfBandWidth(), 
-						  _solverCaller->GetLowerHalfBandWidth());
+			_linearSolverMatrix = SUNBandMatrix(_problemSize, _solverCaller->GetUpperHalfBandWidth(), _solverCaller->GetLowerHalfBandWidth());
+			if (_linearSolverMatrix)
+				_linearSolver = SUNLinSol_Band(_initialData, _linearSolverMatrix);
 		}
 		else
 		{
-			flag = CVDense(_cvodeMem, _problemSize);
+			_linearSolverMatrix = SUNDenseMatrix(_problemSize, _problemSize);
+			if (_linearSolverMatrix)
+				_linearSolver = SUNLinSol_Dense(_initialData, _linearSolverMatrix);
 		}
 
-		switch(flag)
-		{
-		case CVDLS_SUCCESS:
-			break;
-		case CVDLS_MEM_NULL:
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "The cvode mem pointer is NULL.");
-		case CVDLS_ILL_INPUT:
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "The cvdense solver is not compatible with the current nvector module.");
-		case CVDLS_MEM_FAIL:
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-                                          "CVDense: memory allocation request failed.");
-		default:
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVDense returned unexpected value.");
-		}
+		if (!_linearSolverMatrix)
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for the linear solver matrix");
+		if (!_linearSolver)
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for the linear solver");
+
+		//Attach the matrix and linear solver
+		flag = CVodeSetLinearSolver(_cvodeMem, _linearSolver, _linearSolverMatrix);
+		if(flag != CVLS_SUCCESS)
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetLinearSolver failed.");
 
 		//set jacobian function (if defined)
 		if (_solverCaller->IsSet_ODEJacFunction())
 		{
 			if (_solverCaller->UseBandLinearSolver())
 			{
-				//create interim jacobian matrix for translation DenseJacobian==>BandJacobian
-				if(_interimDenseJacobian)
-					DestroyMat(_interimDenseJacobian);
-				_interimDenseJacobian = NewDenseMat(_problemSize, _problemSize);
-
-				flag = CVDlsSetBandJacFn(_cvodeMem, CVODE_JacFn_Band);
+				////create interim jacobian matrix for translation DenseJacobian==>BandJacobian
+				//if (_interimDenseJacobian)
+				//	DestroyMat(_interimDenseJacobian);
+				//_interimDenseJacobian = NewDenseMat(_problemSize, _problemSize);
+				//flag = CVodeSetJacFn(_cvodeMem, CVODE_JacFn_Band);
+				//TODO 4.0
+				flag = CVodeSetJacFn(_cvodeMem, CVODE_JacFn_Dense);
 			}
 			else
-				flag = CVDlsSetDenseJacFn(_cvodeMem, CVODE_JacFn_Dense);
+				flag = CVodeSetJacFn(_cvodeMem, CVODE_JacFn_Dense);
 		}
 		else
 		{
-			if (_solverCaller->UseBandLinearSolver())
-				flag = CVDlsSetBandJacFn(_cvodeMem, NULL);
-			else
-				flag = CVDlsSetDenseJacFn(_cvodeMem, NULL);
+			flag = CVodeSetJacFn(_cvodeMem, NULL);
 		}
-		if (flag != CVDLS_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVDlsSetDenseJacFn failed.");
+		if (flag != CVLS_SUCCESS)
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetJacFn failed.");
+
+		//if (_solverCaller->IsSet_ODEJacFunction())
+		//{
+		//	if (_solverCaller->UseBandLinearSolver())
+		//	{
+		//		//create interim jacobian matrix for translation DenseJacobian==>BandJacobian
+		//		if(_interimDenseJacobian)
+		//			DestroyMat(_interimDenseJacobian);
+		//		_interimDenseJacobian = NewDenseMat(_problemSize, _problemSize);
+
+		//		flag = CVDlsSetBandJacFn(_cvodeMem, CVODE_JacFn_Band);
+		//	}
+		//	else
+		//		flag = CVDlsSetDenseJacFn(_cvodeMem, CVODE_JacFn_Dense);
+		//}
+		//else
+		//{
+		//	if (_solverCaller->UseBandLinearSolver())
+		//		flag = CVDlsSetBandJacFn(_cvodeMem, NULL);
+		//	else
+		//		flag = CVDlsSetDenseJacFn(_cvodeMem, NULL);
+		//}
+		//if (flag != CVDLS_SUCCESS)
+		//	throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
+		//	                              "CVDlsSetDenseJacFn failed.");
 
 		setupSensitivityProblem();
 	}
@@ -395,6 +414,18 @@ void SimModelSolver_CVODES::Terminate ()
 		_sensitivityValues = NULL;
 	}
 
+	if (_linearSolver)
+	{
+		SUNLinSolFree(_linearSolver);
+		_linearSolver = NULL;
+	}
+
+	if (_linearSolverMatrix)
+	{
+		SUNMatDestroy(_linearSolverMatrix);
+		_linearSolverMatrix = NULL;
+	}
+
 	_initialized = false;
 }
 
@@ -512,9 +543,9 @@ void SimModelSolver_CVODES::SetOption(const std::string & name, double value)
 	else if (NameToUpper == "ITER")
 	{
 		int iValue = (int) value + 1; //+1 because CVODE constants changed!!
-		if ((iValue != CV_FUNCTIONAL) && (iValue != CV_NEWTON))
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                                  "Invalid value for CVODE solver option Iter passed");
+		//if ((iValue != CV_FUNCTIONAL) && (iValue != CV_NEWTON)) //TODO 4.0
+		//	throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
+		//                                  "Invalid value for CVODE solver option Iter passed");
 		_iter = iValue;
 	}
 	else if (NameToUpper == "MAXORD")
@@ -596,53 +627,52 @@ int SimModelSolver_CVODES::CVODE_SensitivityRhsFunction(int Ns, realtype t, N_Ve
 	return -1; //unrecoverable Error
 }
 
-int SimModelSolver_CVODES::CVODE_JacFn_Band(long int N, 
-		                        long int mupper, long int mlower, 
-								realtype t,
-                                N_Vector y, N_Vector fy, DlsMat J, void *user_data,
-                                N_Vector tmp1, N_Vector tmp2, N_Vector tmp3)
+int SimModelSolver_CVODES::CVODE_JacFn_Band(realtype t, N_Vector y, N_Vector fy, SUNMatrix J,
+	                                        void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3)
 {
-	const char * ERROR_SOURCE = "SimModelSolver_CVODES::CVODE_JacFn_Band";
+	//const char * ERROR_SOURCE = "SimModelSolver_CVODES::CVODE_JacFn_Band";
 
-	//user_data MUST provide pointer to the instance of SimModelSolver_CVODES class
-	//This instance cannot be accessed from CVODE_JacFn_Band because it's a static member
+	////user_data MUST provide pointer to the instance of SimModelSolver_CVODES class
+	////This instance cannot be accessed from CVODE_JacFn_Band because it's a static member
 
-	UserData * userData = dynamic_cast<UserData *> ((UserData *)user_data);
-	if (!userData)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Missing class instance pointer");
-	SimModelSolver_CVODES * SMS_CVODE = userData->Solver;
+	//UserData * userData = dynamic_cast<UserData *> ((UserData *)user_data);
+	//if (!userData)
+	//	throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Missing class instance pointer");
+	//SimModelSolver_CVODES * SMS_CVODE = userData->Solver;
 
-	DlsMat interimDenseJacobian = SMS_CVODE->InterimDenseJacobian();
+	//DlsMat interimDenseJacobian = SMS_CVODE->InterimDenseJacobian();
 
-	//---- reset interim dense jacobian matrix
-	long int rowIdx, colIdx;
-	const long int problemSize = N;
+	////---- reset interim dense jacobian matrix
+	//long int rowIdx, colIdx;
+	//const long int problemSize = N;
 
-	for(rowIdx=0; rowIdx<problemSize; rowIdx++)
-		for(colIdx=0; colIdx<problemSize; colIdx++)
-			DENSE_ELEM(interimDenseJacobian, rowIdx, colIdx) = 0.0;
+	//for(rowIdx=0; rowIdx<problemSize; rowIdx++)
+	//	for(colIdx=0; colIdx<problemSize; colIdx++)
+	//		DENSE_ELEM(interimDenseJacobian, rowIdx, colIdx) = 0.0;
 
-	//---- calc Jacobian info using Matrix for DENSE
-	int RetVal = CVODE_JacFn_Dense(N, t, y, fy, interimDenseJacobian, user_data, tmp1, tmp2, tmp3);
+	////---- calc Jacobian info using Matrix for DENSE
+	//int RetVal = CVODE_JacFn_Dense(N, t, y, fy, interimDenseJacobian, user_data, tmp1, tmp2, tmp3);
 
-	//---- now copy elements from dense Jacobian matrix to the band Jacobian matrix
-	long int colIdxMin, colIdxMax;
-	
-	for(rowIdx=0; rowIdx<problemSize; rowIdx++)
-	{
-		colIdxMin = max((long int)0, rowIdx-mlower);
-		colIdxMax = min(problemSize-1, rowIdx+mupper);
+	////---- now copy elements from dense Jacobian matrix to the band Jacobian matrix
+	//long int colIdxMin, colIdxMax;
+	//
+	//for(rowIdx=0; rowIdx<problemSize; rowIdx++)
+	//{
+	//	colIdxMin = max((long int)0, rowIdx-mlower);
+	//	colIdxMax = min(problemSize-1, rowIdx+mupper);
 
-		for(colIdx = colIdxMin; colIdx<=colIdxMax; colIdx++)
-			BAND_ELEM(J, rowIdx, colIdx) = DENSE_ELEM(interimDenseJacobian, rowIdx, colIdx);
-	}
+	//	for(colIdx = colIdxMin; colIdx<=colIdxMax; colIdx++)
+	//		BAND_ELEM(J, rowIdx, colIdx) = DENSE_ELEM(interimDenseJacobian, rowIdx, colIdx);
+	//}
 
-	return RetVal;
+	//return RetVal;
+
+	//TODO 4.0
+	return 0;
 }
 
-int SimModelSolver_CVODES::CVODE_JacFn_Dense(long int N, realtype t,
-                           N_Vector y, N_Vector fy, DlsMat J, void *user_data,
-                           N_Vector tmp1, N_Vector tmp2, N_Vector tmp3)
+int SimModelSolver_CVODES::CVODE_JacFn_Dense(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, 
+	                                         void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3)
 {
 	const char * ERROR_SOURCE = "SimModelSolver_CVODES::CVODE_JacFn";
 
@@ -664,7 +694,15 @@ int SimModelSolver_CVODES::CVODE_JacFn_Dense(long int N, realtype t,
 	Jacobian_Return_Value RetVal;
 
 	if (pSolverCaller->IsSet_ODEJacFunction())
-		RetVal = pSolverCaller->ODEJacFunction(t, NV_DATA_S(y), p, NV_DATA_S(fy), J->cols, NULL);
+	{
+		double ** cols;
+		if (pSolverCaller->UseBandLinearSolver())
+			cols = SUNBandMatrix_Cols(J);
+		else
+			cols = SUNDenseMatrix_Cols(J);
+
+		RetVal = pSolverCaller->ODEJacFunction(t, NV_DATA_S(y), p, NV_DATA_S(fy), cols, NULL);
+	}
 	else
 		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
 		                              "Jacobian function not set");
