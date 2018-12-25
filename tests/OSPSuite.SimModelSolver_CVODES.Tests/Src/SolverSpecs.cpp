@@ -58,7 +58,7 @@ namespace UnitTests
 	// Testsystem with 2 variables:
 	//
 	//  y0' = y1
-	//  y1' = y2
+	//  y1' = y0
 	class TestSolverCaller : public TestSolverCallerBase
 	{
 	public:

@@ -5,11 +5,9 @@
 #pragma warning(disable:4786)
 #endif
 
-#include "cvodes/cvodes.h"    /* prototypes for CVodeMalloc, CVode, and CVodeFree, */
-                      /* constants OPT_SIZE, BDF, NEWTON, SV, SUCCESS,     */
-                      /* NST, NFE, NSETUPS, NNI, NCFN, NETF                */
-#include "sunlinsol/sunlinsol_dense.h"  /* prototype for CVDense, constant DENSE_NJE         */
-#include "sunlinsol/sunlinsol_band.h"  /* prototype for CVBand         */
+#include "cvodes/cvodes.h"
+#include "sunlinsol/sunlinsol_dense.h"
+#include "sunlinsol/sunlinsol_band.h"
 #include "nvector/nvector_serial.h"
 
 #include "SimModelSolverBase/SimModelSolverBase.h"
@@ -27,9 +25,6 @@ class UserData;
 class SimModelSolver_CVODES : public SimModelSolverBase
 {
 private:
-
-	//Density matrix used for conversion between dense and band jacobian
-	DlsMat _interimDenseJacobian;
 
 	//type of linear multistep method to be used (ADAMS or BDF)
 	int _lmm;
@@ -66,18 +61,8 @@ private:
 	static int Rhs (realtype t, N_Vector y, N_Vector ydot, void * user_data);
 
 	//Call to jacobian function for the dense linear solver
-	static int CVODE_JacFn_Dense(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, 
-		                         void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
-
-	//Call to jacobian function for the band linear solver
-	static int CVODE_JacFn_Band(realtype t, N_Vector y, N_Vector fy, SUNMatrix J,
-		                        void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
-
-	//static int CVODE_JacFn_Band(long int N, 
-	//	                        long int mupper, long int mlower,
-	//	                        realtype t, 
-	//							N_Vector y, N_Vector fy, DlsMat J, void *user_data,
- //                               N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
+	static int CVODE_JacFn(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, 
+		                   void *user_data, N_Vector tmp1, N_Vector tmp2, N_Vector tmp3);
 
 	//Call to sensitivity RHS function
 	static int CVODE_SensitivityRhsFunction(int Ns, realtype t, N_Vector y, N_Vector ydot, int iS, 
@@ -152,8 +137,6 @@ public:
 	CVODES_EXPORT void SetOption(const std::string & name, double value);
 
 	CVODES_EXPORT SimModelSolverErrorData::errNumber GetErrorNumberFromSolverReturnValue(int solverRetVal);
-
-	DlsMat InterimDenseJacobian(void);
 };
 
 class UserData
