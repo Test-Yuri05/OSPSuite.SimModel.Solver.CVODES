@@ -22,7 +22,6 @@ SimModelSolver_CVODES::SimModelSolver_CVODES(ISolverCaller * pSolverCaller, int 
 	_maxOrd =5;
 	_mxHNil = 10;
 	_lmm = CV_BDF;
-	//_iter = CV_NEWTON; //TODO 4.0
 
 	_absTol_NV = NULL;            
 	_initialData = NULL;  
@@ -35,6 +34,29 @@ SimModelSolver_CVODES::SimModelSolver_CVODES(ISolverCaller * pSolverCaller, int 
 
 	_linearSolverMatrix = NULL;
 	_linearSolver = NULL;
+
+	_numThreads = 0;
+}
+
+int SimModelSolver_CVODES::getNumberOfThreads()
+{
+	if (_numThreads <= 0) //was not (properly) set by user
+	{
+#ifdef _OPENMP
+		_numThreads = omp_get_max_threads() - 1; //default: set to max number of available threads minus one
+		if (_numThreads == 0) 
+			_numThreads = 1;
+#else
+		_numThreads = 1;
+#endif
+	}
+
+	return _numThreads;
+}
+
+void SimModelSolver_CVODES::setNumberOfThreads(int numberOfThreads)
+{
+	_numThreads = numberOfThreads;
 }
 
 SimModelSolver_CVODES::~SimModelSolver_CVODES ()
@@ -69,12 +91,6 @@ void SimModelSolver_CVODES::Init ()
 
 	try
 	{
-		//TODO 4.0 Define as option
-		int num_threads = 1;     /* default value */
-		#ifdef _OPENMP
-		num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
-		#endif
-
 		//perform common solver initialization (base class init routine makes all common checks etc.)
 		SimModelSolverBase::Init();
 
@@ -93,7 +109,7 @@ void SimModelSolver_CVODES::Init ()
 			_initialData = NULL;
 		}
 #ifdef _OPENMP
-		_initialData = N_VNew_OpenMP(_problemSize, num_threads);
+		_initialData = N_VNew_OpenMP(_problemSize, getNumberOfThreads());
 #else
 		_initialData = N_VNew_Serial(_problemSize);
 #endif
@@ -106,7 +122,7 @@ void SimModelSolver_CVODES::Init ()
 			
 		//Get memory for solution vector 
 #ifdef _OPENMP
-		_solution = N_VNew_OpenMP(_problemSize, num_threads);
+		_solution = N_VNew_OpenMP(_problemSize, getNumberOfThreads());
 #else
 		_solution = N_VNew_Serial(_problemSize);
 #endif
@@ -194,12 +210,6 @@ void SimModelSolver_CVODES::setupSensitivityProblem()
 		return; //nothing to do
 
 	int i;
-
-	//TODO 4.0 Define as option
-	int num_threads = 1;     /* default value */
-#ifdef _OPENMP
-	num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
-#endif
 
 	//---- initial sensitivity parameter values and scaling factors
 	CVODES_UserData->SensitivityParameters = new double[_numberOfSensitivityParameters];
@@ -339,12 +349,6 @@ int SimModelSolver_CVODES::ReInit (double t0, const vector < double > & y0)
 	if (iResultFlag != SimModelSolverErrorData::err_OK)
 		return iResultFlag;
 
-	//TODO 4.0 Define as option
-	int num_threads = 1;     /* default value */
-#ifdef _OPENMP
-	num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
-#endif
-
 	//fill new initial data vector
 	if (_initialData)
 	{
@@ -356,7 +360,7 @@ int SimModelSolver_CVODES::ReInit (double t0, const vector < double > & y0)
 		_initialData = NULL;
 	}
 #ifdef _OPENMP
-	_initialData = N_VNew_OpenMP(_problemSize, num_threads);
+	_initialData = N_VNew_OpenMP(_problemSize, getNumberOfThreads());
 #else
 	_initialData = N_VNew_Serial(_problemSize);
 #endif
@@ -552,10 +556,7 @@ void SimModelSolver_CVODES::SetOption(const std::string & name, double value)
 	}
 	else if (NameToUpper == "ITER")
 	{
-		int iValue = (int) value + 1; //+1 because CVODE constants changed!!
-		//if ((iValue != CV_FUNCTIONAL) && (iValue != CV_NEWTON)) //TODO 4.0
-		//	throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Invalid value for CVODE solver option Iter passed");
-		_iter = iValue;
+		//not used anymore. Keep option just for backward compatibility
 	}
 	else if (NameToUpper == "MAXORD")
 	{
@@ -568,6 +569,13 @@ void SimModelSolver_CVODES::SetOption(const std::string & name, double value)
 	{
 		int iValue = (int) value;
 		_mxHNil = iValue;
+	}
+	else if (NameToUpper == "NUMBEROFTHREADS")
+	{
+		int iValue = (int)value;
+		if(iValue<1)
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Invalid value for CVODE solver option NumberOfThreads passed");
+		setNumberOfThreads(iValue);
 	}
 	else
 		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Unknown CVODE solver option passed: " + name);
@@ -690,12 +698,6 @@ void SimModelSolver_CVODES::FillSolverOptions(void)
 	const char * ERROR_SOURCE = "SimModelSolver_CVODES::FillSolverOptions";
 	int flag;
 
-	//TODO 4.0 Define as option
-	int num_threads = 1;     /* default value */
-#ifdef _OPENMP
-	num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
-#endif
-
 	//relative tolerance
 	_relTol_CVODE = _relTol;
 
@@ -710,7 +712,7 @@ void SimModelSolver_CVODES::FillSolverOptions(void)
 	}
 
 #ifdef _OPENMP
-	_absTol_NV = N_VNew_OpenMP(_problemSize, num_threads);
+	_absTol_NV = N_VNew_OpenMP(_problemSize, getNumberOfThreads());
 #else
 	_absTol_NV = N_VNew_Serial(_problemSize);
 #endif

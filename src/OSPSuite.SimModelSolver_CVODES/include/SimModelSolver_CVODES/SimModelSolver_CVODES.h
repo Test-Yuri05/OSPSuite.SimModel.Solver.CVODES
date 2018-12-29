@@ -29,10 +29,6 @@ private:
 	//type of linear multistep method to be used (ADAMS or BDF)
 	int _lmm;
 
-	//type of iteration used to solve non linear system that arises during each internal time step
-	//legal values are FUNCTIONAL and NEWTON
-	int _iter;
-
 	int _maxOrd;
 
 	int _mxHNil;
@@ -75,6 +71,11 @@ private:
 
 	SUNMatrix _linearSolverMatrix;
 	SUNLinearSolver _linearSolver;
+
+	//number of threads to be used for parallel execution (e.g. OpenMP - if enabled)
+	int _numThreads;
+	int getNumberOfThreads();
+	void setNumberOfThreads(int numberOfThreads);
 
 public:
 	UserData * CVODES_UserData;
