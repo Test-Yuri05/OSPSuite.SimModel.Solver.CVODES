@@ -2,6 +2,11 @@
 #include <sstream>
 #include <algorithm>
 #include <math.h>
+#include <nvector/nvector_openmp.h>
+
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 using namespace std;
 
@@ -64,6 +69,12 @@ void SimModelSolver_CVODES::Init ()
 
 	try
 	{
+		//TODO 4.0 Define as option
+		int num_threads = 1;     /* default value */
+		#ifdef _OPENMP
+		num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
+		#endif
+
 		//perform common solver initialization (base class init routine makes all common checks etc.)
 		SimModelSolverBase::Init();
 
@@ -74,10 +85,18 @@ void SimModelSolver_CVODES::Init ()
 		// Initial data
 		if (_initialData)
 		{
+#ifdef _OPENMP
+			N_VDestroy_OpenMP(_initialData);
+#else
 			N_VDestroy_Serial(_initialData);
+#endif
 			_initialData = NULL;
 		}
+#ifdef _OPENMP
+		_initialData = N_VNew_OpenMP(_problemSize, num_threads);
+#else
 		_initialData = N_VNew_Serial(_problemSize);
+#endif
 		if (!_initialData)
 			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for ODE initial data");
 		
@@ -86,10 +105,13 @@ void SimModelSolver_CVODES::Init ()
 			NV_Ith_S(_initialData, i) = _initialValues[i];
 			
 		//Get memory for solution vector 
+#ifdef _OPENMP
+		_solution = N_VNew_OpenMP(_problemSize, num_threads);
+#else
 		_solution = N_VNew_Serial(_problemSize);
+#endif
 		if (!_solution)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "Cannot allocate memory for solution vector");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for solution vector");
 		
 		//Instantiate CVODE solver and specify the solution method
 		_cvodeMem = CVodeCreate(_lmm);
@@ -103,8 +125,7 @@ void SimModelSolver_CVODES::Init ()
 		case CV_SUCCESS:
 			break;
 		case CV_MEM_NULL:
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "The cvode memory block was not initialized through a previous call to CVodeCreate");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "The cvode memory block was not initialized through a previous call to CVodeCreate");
 		case CV_MEM_FAIL:
 			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "A memory allocation request has failed.");
 		case CV_ILL_INPUT:
@@ -159,8 +180,7 @@ void SimModelSolver_CVODES::Init ()
 	catch(...)
 	{
 		this->Terminate();
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                          "Unknown error occured during initialization of ODE system");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Unknown error occured during initialization of ODE system");
 	}
 
 	_initialized = true;
@@ -175,12 +195,17 @@ void SimModelSolver_CVODES::setupSensitivityProblem()
 
 	int i;
 
+	//TODO 4.0 Define as option
+	int num_threads = 1;     /* default value */
+#ifdef _OPENMP
+	num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
+#endif
+
 	//---- initial sensitivity parameter values and scaling factors
 	CVODES_UserData->SensitivityParameters = new double[_numberOfSensitivityParameters];
 	CVODES_UserData->ScalingFactors = new double[_numberOfSensitivityParameters];
 	if (!CVODES_UserData->SensitivityParameters || !CVODES_UserData->ScalingFactors)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                              "Cannot allocate memory for user data");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for user data");
 
 	for (i = 0; i < _numberOfSensitivityParameters; i++)
 	{
@@ -201,10 +226,13 @@ void SimModelSolver_CVODES::setupSensitivityProblem()
 	}
 
 	//create matrix for storing of the sensitivity values dy_i/dp_j
+#ifdef _OPENMP
+	_sensitivityValues = N_VCloneVectorArray_OpenMP(_numberOfSensitivityParameters, _initialData);
+#else
 	_sensitivityValues = N_VCloneVectorArray_Serial(_numberOfSensitivityParameters, _initialData);
+#endif
 	if (_sensitivityValues == NULL)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                              "Cannot allocate memory for ODE sensitivities initial data vector");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for ODE sensitivities initial data vector");
 
 	//set initial values of sensitivities (dy_i/dp_j(0)) to zero
 	for (i = 0; i < _numberOfSensitivityParameters; i++) 
@@ -257,14 +285,18 @@ int SimModelSolver_CVODES::PerformSolverStep(double tout, double * y, double ** 
 
 	//check the solver was initialized
 	if (!_initialized)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                          "Solver was not initialized");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Solver was not initialized");
 
 	//perform next solver step
 	int iResultflag = CVode(_cvodeMem, tout, _solution, &tret, CV_NORMAL);
 
 	//copy new solution vector
+#ifdef _OPENMP
+	double * _SolutionData = NV_DATA_OMP(_solution);
+#else
 	double * _SolutionData = NV_DATA_S(_solution);
+#endif
+
 	int i;
 	for(i=0; i<_problemSize; i++)
 		y[i] = _SolutionData[i];
@@ -279,7 +311,11 @@ int SimModelSolver_CVODES::PerformSolverStep(double tout, double * y, double ** 
 	//at the end; yS[i][j]=dy_i/dp_j
 	for (int j = 0; j < _numberOfSensitivityParameters; j++)
 	{
-		realtype * data = NV_DATA_S(_sensitivityValues[j]);
+#ifdef _OPENMP
+		double * data = NV_DATA_OMP(_sensitivityValues[j]);
+#else
+		double * data = NV_DATA_S(_sensitivityValues[j]);
+#endif
 
 		for (i = 0; i < _problemSize; i++)
 		{
@@ -303,16 +339,29 @@ int SimModelSolver_CVODES::ReInit (double t0, const vector < double > & y0)
 	if (iResultFlag != SimModelSolverErrorData::err_OK)
 		return iResultFlag;
 
+	//TODO 4.0 Define as option
+	int num_threads = 1;     /* default value */
+#ifdef _OPENMP
+	num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
+#endif
+
 	//fill new initial data vector
 	if (_initialData)
 	{
+#ifdef _OPENMP
+		N_VDestroy_OpenMP(_initialData);
+#else
 		N_VDestroy_Serial(_initialData);
+#endif
 		_initialData = NULL;
 	}
+#ifdef _OPENMP
+	_initialData = N_VNew_OpenMP(_problemSize, num_threads);
+#else
 	_initialData = N_VNew_Serial(_problemSize);
+#endif
 	if (!_initialData)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                          "Cannot allocate memory for ODE initial data vector");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for ODE initial data vector");
 
 	for (int i = 0; i < _problemSize; i++) 
 		NV_Ith_S(_initialData, i) = y0[i];
@@ -332,19 +381,31 @@ void SimModelSolver_CVODES::Terminate ()
 {
 	if (_solution)
 	{
+#ifdef _OPENMP
+		N_VDestroy_OpenMP(_solution);
+#else
 		N_VDestroy_Serial(_solution);
+#endif
 		_solution = NULL;
 	}
 
 	if (_initialData)
 	{
+#ifdef _OPENMP
+		N_VDestroy_OpenMP(_initialData);
+#else
 		N_VDestroy_Serial(_initialData);
+#endif
 		_initialData = NULL;
 	}
 
 	if (_absTol_NV)
 	{
+#ifdef _OPENMP
+		N_VDestroy_OpenMP(_absTol_NV);
+#else
 		N_VDestroy_Serial(_absTol_NV);
+#endif
 		_absTol_NV = NULL;
 	}
 
@@ -356,7 +417,11 @@ void SimModelSolver_CVODES::Terminate ()
 
 	if (_sensitivityValues && (_numberOfSensitivityParameters > 0))
 	{
+#ifdef _OPENMP
+		N_VDestroyVectorArray_OpenMP(_sensitivityValues, _numberOfSensitivityParameters);
+#else
 		N_VDestroyVectorArray_Serial(_sensitivityValues, _numberOfSensitivityParameters);
+#endif
 		_sensitivityValues = NULL;
 	}
 
@@ -482,24 +547,21 @@ void SimModelSolver_CVODES::SetOption(const std::string & name, double value)
 	{
 		int iValue = (int) value + 1 ; //+1 because CVODE constants changed!!
 		if ((iValue != CV_ADAMS) && (iValue != CV_BDF))
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                                  "Invalid value for CVODE solver option Lmm passed");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Invalid value for CVODE solver option Lmm passed");
 		_lmm = iValue;
 	}
 	else if (NameToUpper == "ITER")
 	{
 		int iValue = (int) value + 1; //+1 because CVODE constants changed!!
 		//if ((iValue != CV_FUNCTIONAL) && (iValue != CV_NEWTON)) //TODO 4.0
-		//	throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		//                                  "Invalid value for CVODE solver option Iter passed");
+		//	throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Invalid value for CVODE solver option Iter passed");
 		_iter = iValue;
 	}
 	else if (NameToUpper == "MAXORD")
 	{
 		int iValue = (int) value;
 		if ((iValue < 1) || (iValue > 5))
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                                  "Invalid value for CVODE solver option MaxOrd passed");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Invalid value for CVODE solver option MaxOrd passed");
 		_maxOrd = iValue;
 	}
 	else if (NameToUpper == "MXHNIL")
@@ -508,8 +570,7 @@ void SimModelSolver_CVODES::SetOption(const std::string & name, double value)
 		_mxHNil = iValue;
 	}
 	else
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                              "Unknown CVODE solver option passed: " + name);
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Unknown CVODE solver option passed: " + name);
 
 }
 
@@ -523,17 +584,19 @@ int SimModelSolver_CVODES::Rhs (realtype t, N_Vector y, N_Vector ydot,
 
 	UserData * userData = dynamic_cast<UserData *> ((UserData *)user_data);
 	if (!userData)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                              "Missing class instance pointer");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Missing class instance pointer");
 
-	//get pointer to the Solver caller instance und
-	//call the ODE RHS function
+	//get pointer to the Solver caller instance and call the ODE RHS function
 	ISolverCaller * pSolverCaller = userData->Solver->GetSolverCaller();
 
 	//get new values of sensitivity parameters
 	const double * p = userData->SensitivityParameters;
 
+#ifdef _OPENMP
+	Rhs_Return_Value RetVal = pSolverCaller->ODERhsFunction(t, NV_DATA_OMP(y), p, NV_DATA_OMP(ydot), NULL);
+#else
 	Rhs_Return_Value RetVal = pSolverCaller->ODERhsFunction(t, NV_DATA_S(y), p, NV_DATA_S(ydot), NULL);
+#endif
 
 	if (RetVal == RHS_OK)
 		return 0;
@@ -556,13 +619,16 @@ int SimModelSolver_CVODES::CVODE_SensitivityRhsFunction(int Ns, realtype t, N_Ve
 
 	UserData * userData = dynamic_cast<UserData *> ((UserData *)user_data);
 	if (!userData)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		"Missing class instance pointer");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Missing class instance pointer");
 
 	//get pointer to the Solver caller instance and call ODE Sensitivity RHS function
 	ISolverCaller * pSolverCaller = userData->Solver->GetSolverCaller();
 
+#ifdef _OPENMP
+	Sensitivity_Rhs_Return_Value RetVal = pSolverCaller->ODESensitivityRhsFunction(t, NV_DATA_OMP(y), NV_DATA_OMP(ydot), iS, NV_DATA_OMP(yS), NV_DATA_OMP(ySdot), NULL);
+#else
 	Sensitivity_Rhs_Return_Value RetVal = pSolverCaller->ODESensitivityRhsFunction(t, NV_DATA_S(y), NV_DATA_S(ydot), iS, NV_DATA_S(yS), NV_DATA_S(ySdot), NULL);
+#endif
 
 	if (RetVal == SENSITIVITY_RHS_OK)
 		return 0;
@@ -583,11 +649,9 @@ int SimModelSolver_CVODES::CVODE_JacFn(realtype t, N_Vector y, N_Vector fy, SUNM
 
 	UserData * userData = dynamic_cast<UserData *> ((UserData *)user_data);
 	if (!userData)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		"Missing class instance pointer");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Missing class instance pointer");
 
-	//get pointer to the Solver caller instance und
-	//call the ODE RHS function
+	//get pointer to the Solver caller instance and call the ODE RHS function
 	ISolverCaller * pSolverCaller = userData->Solver->GetSolverCaller();
 
 	//get new values of sensitivity parameters
@@ -603,11 +667,14 @@ int SimModelSolver_CVODES::CVODE_JacFn(realtype t, N_Vector y, N_Vector fy, SUNM
 		else
 			cols = SUNDenseMatrix_Cols(J);
 
+#ifdef _OPENMP
+		RetVal = pSolverCaller->ODEJacFunction(t, NV_DATA_OMP(y), p, NV_DATA_OMP(fy), cols, NULL);
+#else
 		RetVal = pSolverCaller->ODEJacFunction(t, NV_DATA_S(y), p, NV_DATA_S(fy), cols, NULL);
+#endif
 	}
 	else
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-		                              "Jacobian function not set");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Jacobian function not set");
 
 	if (RetVal == JACOBIAN_OK)
 		return 0;
@@ -623,17 +690,32 @@ void SimModelSolver_CVODES::FillSolverOptions(void)
 	const char * ERROR_SOURCE = "SimModelSolver_CVODES::FillSolverOptions";
 	int flag;
 
+	//TODO 4.0 Define as option
+	int num_threads = 1;     /* default value */
+#ifdef _OPENMP
+	num_threads = omp_get_max_threads();  /* Overwrite with OMP_NUM_THREADS environment variable */
+#endif
+
 	//relative tolerance
 	_relTol_CVODE = _relTol;
 
 	//absolute tolerance
 	if (_absTol_NV)
+	{
+#ifdef _OPENMP
+		N_VDestroy_OpenMP(_absTol_NV);
+#else
 		N_VDestroy_Serial(_absTol_NV);
+#endif
+	}
 
+#ifdef _OPENMP
+	_absTol_NV = N_VNew_OpenMP(_problemSize, num_threads);
+#else
 	_absTol_NV = N_VNew_Serial(_problemSize);
+#endif
 	if (!_absTol_NV)
-		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                          "Cannot allocate memory for absolute tolerances");
+		throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "Cannot allocate memory for absolute tolerances");
 	
 	for (int i = 0; i < _problemSize; i++)
 		NV_Ith_S(_absTol_NV, i) = _absTol[i];
@@ -661,8 +743,7 @@ void SimModelSolver_CVODES::FillSolverOptions(void)
 		//pass pointer to the actual class instance (casted to void *)
 		flag = CVodeSetUserData(_cvodeMem, CVODES_UserData);
 		if (flag != CV_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVodeSetUserData failed.");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetUserData failed.");
 		
 		//maximum order of the linear multistep method
 		flag = CVodeSetMaxOrd(_cvodeMem, _maxOrd);
@@ -673,32 +754,27 @@ void SimModelSolver_CVODES::FillSolverOptions(void)
 		//maximum number of steps to be taken by the solver in its attempt to reach the next output time.
 		flag = CVodeSetMaxNumSteps(_cvodeMem, _mxStep);
 		if (flag != CV_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVodeSetMaxNumSteps failed.");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetMaxNumSteps failed.");
 
 		//maximum number of messages issued by the solver warning that t + h = t on the next internal step.
 		flag = CVodeSetMaxHnilWarns(_cvodeMem, _mxHNil);
 		if (flag != CV_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVodeSetMaxHnilWarns failed.");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetMaxHnilWarns failed.");
 		
 		//specifies the initial step size.
 		flag = CVodeSetInitStep(_cvodeMem, _h0);
 		if (flag != CV_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVodeSetInitStep failed.");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetInitStep failed.");
 
 		//specifies the initial step size.
 		flag = CVodeSetMaxStep(_cvodeMem, _hMax);
 		if (flag != CV_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVodeSetMaxStep failed.");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetMaxStep failed.");
 
 		//specifies the initial step size.
 		flag = CVodeSetMinStep(_cvodeMem, _hMin);
 		if (flag != CV_SUCCESS)
-			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE,
-			                              "CVodeSetMinStep failed.");
+			throw SimModelSolverErrorData(SimModelSolverErrorData::err_FAILURE, ERROR_SOURCE, "CVodeSetMinStep failed.");
 }
 
 UserData::UserData()
