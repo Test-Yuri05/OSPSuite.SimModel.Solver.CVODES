@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <description>SimModel Solver</description>
-    <id>OSPSuite.SimModelSolver_CVODES</id>
+    <id>OSPSuite.SimModelSolver_CVODES.Ubuntu18</id>
     <version>$version$</version>
     <title>OSPSuite.SimModelSolver_CVODES</title>
     <authors>Open-Systems-Pharmacology</authors>
@@ -15,13 +15,9 @@
     <tags>open-systems-pharmacology</tags>
   </metadata>
   <files>
-    <file src="..\..\Build\Debug\x64\OSPSuite.SimModelSolver_CVODES.dll" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Debug" />
-    <file src="..\..\Build\Debug\x64\OSPSuite.SimModelSolver_CVODES.lib" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Debug" />
-    <file src="..\..\Build\Debug\x64\OSPSuite.SimModelSolver_CVODES.pdb" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Debug" />
+    <file src="..\..\Build\Debug\x64\libOSPSuite.SimModelSolver_CVODES.so" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Debug" />
 
-    <file src="..\..\Build\Release\x64\OSPSuite.SimModelSolver_CVODES.dll" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Release" />
-    <file src="..\..\Build\Release\x64\OSPSuite.SimModelSolver_CVODES.lib" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Release" />
-    <file src="..\..\Build\Release\x64\OSPSuite.SimModelSolver_CVODES.pdb" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Release" />
+    <file src="..\..\Build\Release\x64\libOSPSuite.SimModelSolver_CVODES.so" target="OSPSuite.SimModelSolver_CVODES\bin\native\x64\Release" />
 
     <file src="..\OSPSuite.SimModelSolver_CVODES\include\**\*.h" target="OSPSuite.SimModelSolver_CVODES\include" />
     <file src="..\OSPSuite.SimModelSolver_CVODES\src\**\*.*" target="OSPSuite.SimModelSolver_CVODES\src" />
