@@ -19,7 +19,8 @@ jobs:
 
     - name: Call build script
       run: 
-        chmod ugo+x buildLinux.sh | 
+        chmod ugo+x ./buildLinux.sh | 
+        ls -l | 
         ./buildLinux.sh
       shell: bash
       
