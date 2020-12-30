@@ -19,7 +19,7 @@ jobs:
 
     - name: Call build script
       run: |
-        sh ./buildLinux.sh
+        sh ./buildLinux.sh Ubuntu18 4.0.0.49
 #      shell: bash
       
 #    - name: Create Build Environment
