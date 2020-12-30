@@ -19,7 +19,7 @@ jobs:
 
     - name: Call build script
       run: 
-        chmod ugo+x buildLinux.sh
+        chmod ugo+x buildLinux.sh | 
         ./buildLinux.sh
       
 #    - name: Create Build Environment
