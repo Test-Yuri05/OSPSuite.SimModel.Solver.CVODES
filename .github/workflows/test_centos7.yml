@@ -8,5 +8,8 @@ jobs:
     container: 'centos:7'
     
     steps:
-    - run: yum -y install git
-# nuget make cmake
+#    - run: yum -y install git
+    - run: yum -y install nuget
+#    - run: yum -y install make
+#    - run: yum -y install cmake
+
