@@ -25,6 +25,7 @@ jobs:
     container: 'centos:latest'
     
     steps:
+    - run: yum -y install git nuget make cmake
     - uses: actions/checkout@v2
 
     - name: Call build script
