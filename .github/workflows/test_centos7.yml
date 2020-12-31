@@ -8,10 +8,6 @@ jobs:
     container: 'centos:7'
     
     steps:
-      - run: yum install scl_source
-      - run: . scl_source enable devtoolset-7 || true
-      - run: yum update
-      - run: yum list nuget*
 #    - run: yum -y install git
       - run: yum -y install nuget
 #    - run: yum -y install make
