@@ -8,6 +8,7 @@ jobs:
     container: 'centos:7'
     
     steps:
+      - run: yum update
       - run: yum list nuget*
 #    - run: yum -y install git
       - run: yum -y install nuget
